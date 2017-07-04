@@ -1,6 +1,6 @@
-mongoose = require('mongoose');
+var mongoose = require('mongoose');
 
-module.exports = function() {
-     if(mongoose.connect('mongodb://localhost/trovi/comercios'))
-        console.log('Conexion creada correctamente : MONGODB')
-}
+mongoose.connect('mongodb://localhost/troviapp')
+
+module.exports = mongoose;
+
