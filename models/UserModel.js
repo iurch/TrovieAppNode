@@ -3,7 +3,7 @@ const UserSchema = require('../database/schemas').userSchema;
 
 
 const models = {
-    User: mongoose.model('User',UserSchema)
+    users: mongoose.model('users',UserSchema)
 };
 
 module.exports = models;

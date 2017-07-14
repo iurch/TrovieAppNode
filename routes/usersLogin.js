@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 
+let UsersModel = require('../models/UserModel').users;
+
 // router.get('/',(req,res)=>{
 //     res.send(JSON.stringify({'ok':'ok'}))
 //     res.end()
@@ -9,17 +11,18 @@ var router = express.Router();
 router.post('/',function(req,res,next){
     let usernameOrEmail = req.body.usernameOrEmail;
     let password = req.body.password;
+    let json = {"password":password}
 
-    res.send('Datos')
 
     if (isEmail(usernameOrEmail)) {
-        // Es email
-        console.log('Es un email')
-        UserModel.findOne({ email: usernameOrEmail, password: password }, function (err, doc) {
-            if (err)
+        json.email = usernameOrEmail
+    } else {
+        json.username = usernameOrEmail        
+    }
+    UsersModel.findOne(json, function (err, doc) {
+            if (err !== null)
                 next(err)
-
-            if (doc) {
+            if (doc !== null) {
                 let UserJSON = {
                     id: doc._id,
                     username: doc.username,
@@ -30,40 +33,10 @@ router.post('/',function(req,res,next){
                 res.json(UserJSON);
                 res.end()
             } else {
-                res.send('El usuario no es encontrado con esa información')
+                res.json(null)
+                res.end()
             }
-
         });
-    } else {
-        // es usuario
-        // console.log('Es un Usuario')
-        UserModel.findOne({ username: usernameOrEmail, password: password }, function (err, doc) {
-            // if (err)
-            //     next(err)
-
-            // if (doc) {
-                // let UserJSON =  {
-                //     id: doc._id,
-                //     username: doc.username,
-                //     email: doc.email,
-                //     password: '',
-                //     activo: true
-                // }
-
-                let UserJSON =  {
-                    id: 4,
-                    username: 'jmar',
-                    email: 'email',
-                    password: '',
-                    activo: true
-                }
-                res.send('Que contestas')
-                
-            // } else {
-            //     res.send('El usuario no es encontrado con esa información')
-            // }
-        });
-    }
 });
 
 function isEmail(userOrEmail) {
