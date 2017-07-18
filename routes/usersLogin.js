@@ -3,11 +3,6 @@ var router = express.Router();
 
 let UsersModel = require('../models/UserModel').users;
 
-// router.get('/',(req,res)=>{
-//     res.send(JSON.stringify({'ok':'ok'}))
-//     res.end()
-// })
-
 router.post('/',function(req,res,next){
     let usernameOrEmail = req.body.usernameOrEmail;
     let password = req.body.password;
@@ -20,6 +15,7 @@ router.post('/',function(req,res,next){
         json.username = usernameOrEmail        
     }
     UsersModel.findOne(json, function (err, doc) {
+        console.log(doc)
             if (err !== null)
                 next(err)
             if (doc !== null) {

@@ -1,9 +1,17 @@
 var express = require('express');
+
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+
+var passport = require('passport')
+var flash = require('connect-flash')
+var session = require('express-session')
+
+const port = process.env.PORT || 3000
+
 
 var mongooseDB = require('./database/config');
 
@@ -29,26 +37,21 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// app.use('/', index);
-// app.use('/users', users);
-// app.use('/api/',function(req,res){
-//   res.send('Ingresaste al API');
-// });
+app.use(session({secret: 'ilovescotchscotchyscotchscotch'}))
+app.use(passport.initialize())
+app.use(passport.session())
+app.use(flash())
 
-app.use(function (req, res, next) {
-    res.header('Access-Control-Allow-Origin', "*");
-    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-    res.header('Access-Control-Allow-Headers', 'Content-Type');
-    next();
-  })
+app.use(require('./routes/root/headers'))
+
+require('./config/passport')(passport)
+require('./routes/root/root')(app,passport)
 
 
-
-app.use('/login', usersLogin);
-
-
+// app.use('/login', usersLogin);
 //  Relativo al API
 app.use('/api', loginService);
+
 
 app.use('/', function (req, res, next) {
   var erro = new Error('No Authorizated');

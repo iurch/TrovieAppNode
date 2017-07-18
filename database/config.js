@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost/troviapp')
+const url = 'mongodb://localhost/troviapp'
+mongoose.connect(url)
 
 module.exports = mongoose;
 

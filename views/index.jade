@@ -2,4 +2,21 @@ extends layout
 
 block content
   h1= title
-  p Welcome to #{title}
+  //- p Welcome to #{title}
+  div.container
+    div.col-sm-6.col-sm-offset-3
+      h1
+        span(class="fa fa-sign-in")    Trovi Web App
+      div.alert.alert-danger Mensaje de Error
+      form(action="/login", method="post")
+        div.form-group
+          label Usuario o Email
+          input(type="text",name="email").form-control
+        div.form-group
+          label Contraseña
+          input(type="password",name="password").form-control
+        div.text-right
+          button(type="submit").btn.btn-warning.btn-lg Iniciar Sesión
+      hr
+      p.text-center ¿Neceistas una cuenta? 
+        a(href="/singup") Registrate
